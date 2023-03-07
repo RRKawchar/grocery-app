@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grocery_app/screen/home/home_screen.dart';
+import 'package:grocery_app/widget/textWidget.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -38,7 +39,7 @@ class SignInScreen extends StatelessWidget {
         width: double.infinity,
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/background.png"), fit: BoxFit.cover)),
+                image: AssetImage("assets/bg.png"), fit: BoxFit.cover)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -48,17 +49,14 @@ class SignInScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Text("Sign in to continue"),
-                  Text(
-                    "Vegi",
-                    style:
-                        TextStyle(fontSize: 50, color: Colors.white, shadows: [
-                      BoxShadow(
-                          blurRadius: 5,
-                          color: Colors.green.shade900,
-                          offset: const Offset(3, 3))
-                    ]),
-                  ),
+                  TextWidget(text: 'Sign in to continue'),
+                  TextWidget(text: 'Grocery',size: 50,color: Colors.white,fontWeight: FontWeight.bold,shadow: [
+                    BoxShadow(
+                        blurRadius: 8,
+                        color: Colors.green.shade900,
+                        blurStyle: BlurStyle.outer,
+                        offset: const Offset(2, 2))
+                  ],),
                   Column(
                     children: [
                       SignInButton(
@@ -78,12 +76,9 @@ class SignInScreen extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Text(
-                        "By signing in you are agreeing to our",
-                        style: TextStyle(color: Colors.grey[800]),
-                      ),
-                      Text("terms and privacy policy",
-                          style: TextStyle(color: Colors.grey[800])),
+                      TextWidget(text: "By signing in you are agreeing to our",color: Colors.grey[800],),
+                      TextWidget(text: "terms and privacy policy",color: Colors.grey[800],),
+
                     ],
                   ),
                 ],
