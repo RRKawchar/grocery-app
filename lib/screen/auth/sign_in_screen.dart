@@ -67,10 +67,12 @@ class SignInScreen extends StatelessWidget {
                       SignInButton(
                         Buttons.Google,
                         text: "Sign up with Google",
-                        onPressed: () => _googleSignIn().then((value) =>
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()))),
+                        onPressed: ()async{
+                          await _googleSignIn().then((value) =>
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()),),);
+                        }
                       ),
                     ],
                   ),

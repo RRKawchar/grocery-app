@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "300645350332-pvs316anb0vqk39n8ehhnp9cvj0ao4qh.apps.googleusercontent.com",
+          "client_id": "300645350332-s1ksirgbrkjq465agrfha2es9bochvpq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.grocery_app",
@@ -22,7 +22,7 @@
           }
         },
         {
-          "client_id": "300645350332-0ouac5gsksldarijhdp1jdngpfihdsso.apps.googleusercontent.com",
+          "client_id": "300645350332-57bksm43cgoosgek7p5q18a73vuiei4t.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

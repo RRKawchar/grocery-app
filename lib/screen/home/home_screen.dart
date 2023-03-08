@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/component/drawer_side.dart';
 import 'package:grocery_app/component/single_product.dart';
+import 'package:grocery_app/providers/product_provider.dart';
 import 'package:grocery_app/screen/details/details_screen.dart';
+import 'package:grocery_app/screen/search/search_screen.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ProductProvider productProvider=Provider.of<ProductProvider>(context,listen: false);
+    productProvider.fetchHerbsProduct();
     final size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: const DrawerSide(),
@@ -20,20 +25,27 @@ class HomeScreen extends StatelessWidget {
           "Home",
           style: TextStyle(fontSize: 17, color: Colors.black),
         ),
-        actions: const [
+        actions: [
           CircleAvatar(
-            radius: 12,
-            backgroundColor: primaryColor,
-            child: Icon(
-              Icons.search,
-              size: 17,
-              color: Colors.black,
+            radius: 15,
+            backgroundColor: circleBg,
+            child: IconButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const SearchScreen()));
+              },
+              icon:const Center(
+                child: Icon(
+
+                  Icons.search,
+                size: 20,
+                color: Colors.black,),
+              )
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: CircleAvatar(
-              radius: 12,
+              radius: 15,
               backgroundColor: circleBg,
               child: Icon(
                 Icons.shop,
