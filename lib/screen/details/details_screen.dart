@@ -9,7 +9,8 @@ class DetailsScreen extends StatefulWidget {
 
   final String productName;
   final String productImage;
-  const DetailsScreen({Key? key, required this.productName, required this.productImage}) : super(key: key);
+  final int productPrice;
+  const DetailsScreen({Key? key, required this.productName, required this.productImage,required this.productPrice}) : super(key: key);
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -39,7 +40,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ListTile(
                     title: TextWidget(text: widget.productName??""),
                     subtitle: TextWidget(
-                      text: "\$50",
+                      text: "\$${widget.productPrice}",
                     ),
                   ),
                   Container(

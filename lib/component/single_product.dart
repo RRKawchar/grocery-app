@@ -1,14 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/widget/build_image.dart';
 
 class SingleProduct extends StatelessWidget {
 
   final String imageUrl;
   final String title;
+  final int productPrice;
  final void Function() onTap;
-  const SingleProduct({Key? key,  required this.onTap,required this.imageUrl, required this.title,}) : super(key: key);
+  const SingleProduct({Key? key,  required this.onTap,required this.imageUrl, required this.title,required this.productPrice}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final size=MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.all(5),
       height: 230,
@@ -23,17 +27,17 @@ class SingleProduct extends StatelessWidget {
         children: [
           Expanded(flex: 2, child: InkWell(
               onTap: onTap,
-              child: Image.network(imageUrl))),
+              child:BuildImage(size: size,imgUrl: imageUrl,))),
           Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title),
-                    const Text(
-                      "50\$/50 gram",
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    Expanded(child: Text(title,maxLines: 2,overflow: TextOverflow.ellipsis,)),
+                     Text(
+                      "$productPrice\$/50 gram",
+                      style:const TextStyle(fontSize: 15, color: Colors.black),
                     ),
                     Row(
                       children: [

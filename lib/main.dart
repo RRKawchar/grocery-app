@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/providers/product_provider.dart';
-import 'package:grocery_app/screen/auth/sign_in_screen.dart';
 import 'package:grocery_app/screen/home/home_screen.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primaryColor,
         ),
-        home:const HomeScreen(),
+        home: HomeScreen(),
       ),
     );
   }

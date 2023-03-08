@@ -71,7 +71,7 @@ class SignInScreen extends StatelessWidget {
                           await _googleSignIn().then((value) =>
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => const HomeScreen()),),);
+                                      builder: (context) =>  HomeScreen()),),);
                         }
                       ),
                     ],

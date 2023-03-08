@@ -8,13 +8,27 @@ import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  ProductProvider productProvider = ProductProvider();
+
+  @override
+  void initState() {
+    ProductProvider productProvider = Provider.of(context, listen: false);
+    productProvider.fetchHerbsProduct();
+    productProvider.fetchFreshFruit();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider=Provider.of<ProductProvider>(context,listen: false);
-    productProvider.fetchHerbsProduct();
+    productProvider = Provider.of(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: const DrawerSide(),
@@ -30,17 +44,19 @@ class HomeScreen extends StatelessWidget {
             radius: 15,
             backgroundColor: circleBg,
             child: IconButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const SearchScreen()));
-              },
-              icon:const Center(
-                child: Icon(
-
-                  Icons.search,
-                size: 20,
-                color: Colors.black,),
-              )
-            ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SearchScreen()));
+                },
+                icon: const Center(
+                  child: Icon(
+                    Icons.search,
+                    size: 20,
+                    color: Colors.black,
+                  ),
+                )),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 5),
@@ -146,73 +162,26 @@ class HomeScreen extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
-                  SingleProduct(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(
-                              productImage:
-                                  "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                              productName: "Fresh Basil",
-                            ),
-                          ));
-                    },
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Fresh Basil",
-                  ),
-                  SingleProduct(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(
-                              productImage:
-                              "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                              productName: "Fresh Mint",
-                            ),
-                          ));
-                    },
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Fresh Mint",
-                  ),
-                  SingleProduct(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(
-                              productImage:
-                              "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                              productName: "Rose Merry",
-                            ),
-                          ));
-                    },
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Rose Merry",
-                  ),
-                  SingleProduct(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(
-                              productImage:
-                              "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                              productName: "Fresh Basil",
-                            ),
-                          ));
-                    },
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                  ),
-                ],
-              ),
+                  children: List.generate(
+                      productProvider.herbProductList.length, (index) {
+                final data = productProvider.herbProductList[index];
+                return SingleProduct(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                            productImage: data.productImage.toString(),
+                            productName: data.productName.toString(),
+                            productPrice: data.productPrice,
+                          ),
+                        ));
+                  },
+                  imageUrl: data.productImage.toString(),
+                  title: data.productName.toString(),
+                  productPrice: data.productPrice.toInt(),
+                );
+              })),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
@@ -230,52 +199,29 @@ class HomeScreen extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
-                  SingleProduct(
+                children: List.generate(productProvider.freshFruitList.length, (index){
+                  final data= productProvider.freshFruitList[index];
+                  return  SingleProduct(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(
+                            builder: (context) =>  DetailsScreen(
                               productImage:
-                              "https://static.vecteezy.com/system/resources/previews/008/848/372/original/fresh-red-strawberry-fruit-free-png.png",
-                              productName: "Strawberry",
+                              data.productImage,
+                              productName: data.productName,
+                              productPrice: data.productPrice,
                             ),
                           ));
                     },
                     imageUrl:
-                        "https://static.vecteezy.com/system/resources/previews/008/848/372/original/fresh-red-strawberry-fruit-free-png.png",
-                    title: "Strawberry",
-                  ),
-                  SingleProduct(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DetailsScreen(
-                              productImage:
-                              "https://www.pngmart.com/files/3/Watermelon-PNG-File.png",
-                              productName: "Watermelon",
-                            ),
-                          ));
-                    },
-                    imageUrl:
-                        "https://www.pngmart.com/files/3/Watermelon-PNG-File.png",
-                    title: "Watermelon",
-                  ),
-                  SingleProduct(
-                    onTap: () {},
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                  ),
-                  SingleProduct(
-                    onTap: () {},
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                  ),
-                ],
+                    data.productImage,
+                    title: data.productName,
+                    productPrice: data.productPrice,
+                  );
+                })
+
+
               ),
             ),
             Padding(
@@ -283,7 +229,7 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  Text("Herbs seasonings"),
+                  Text("root vegetable"),
                   Text(
                     "View all",
                     style: TextStyle(color: Colors.grey),
@@ -300,24 +246,28 @@ class HomeScreen extends StatelessWidget {
                     imageUrl:
                         "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
                     title: "Basil",
+                    productPrice: 39,
                   ),
                   SingleProduct(
                     onTap: () {},
                     imageUrl:
                         "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
                     title: "Basil",
+                    productPrice: 39,
                   ),
                   SingleProduct(
                     onTap: () {},
                     imageUrl:
                         "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
                     title: "Basil",
+                    productPrice: 39,
                   ),
                   SingleProduct(
                     onTap: () {},
                     imageUrl:
                         "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
                     title: "Basil",
+                    productPrice: 30,
                   ),
                 ],
               ),
