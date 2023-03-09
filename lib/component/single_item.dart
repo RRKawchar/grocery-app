@@ -4,10 +4,17 @@ import 'package:grocery_app/widget/textWidget.dart';
 
 class SingleItems extends StatelessWidget {
   bool isBool = false;
-  SingleItems({Key? key, required this.isBool}) : super(key: key);
+  String productImage;
+  String productName;
+  int productPrice;
+  String cartId;
+  int productQuantity;
+  VoidCallback? onTap;
+  SingleItems({Key? key, required this.isBool,required this.productImage,required this.productName,required this.productPrice,required this.cartId,required this.productQuantity, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Padding(
@@ -19,7 +26,7 @@ class SingleItems extends StatelessWidget {
                 height: 100,
                 child: Center(
                   child: Image.network(
-                      "https://cdn-icons-png.flaticon.com/512/3724/3724788.png"),
+                      productImage),
                 ),
               )),
               Expanded(
@@ -34,12 +41,12 @@ class SingleItems extends StatelessWidget {
                       Column(
                         children: [
                           TextWidget(
-                            text: "Product Name",
+                            text: productName,
                             color: textColor,
                             fontWeight: FontWeight.bold,
                           ),
                           TextWidget(
-                            text: "50\$/50 gram",
+                            text: "$productPrice\$/50 gram",
                             color: Colors.grey,
                           ),
                         ],
@@ -105,10 +112,13 @@ class SingleItems extends StatelessWidget {
                         )
                       : Column(
                           children: [
-                            const Icon(
-                              Icons.delete,
-                              color: Colors.black54,
+                             InkWell(
+                               onTap: onTap,
+                               child: Icon(
+                                Icons.delete,
+                                color: Colors.black54,
                             ),
+                             ),
                             const SizedBox(
                               height: 5,
                             ),

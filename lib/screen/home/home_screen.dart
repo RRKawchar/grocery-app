@@ -22,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     ProductProvider productProvider = Provider.of(context, listen: false);
     productProvider.fetchHerbsProduct();
-    productProvider.fetchFreshFruit();
+    productProvider.fetchFruit();
+    productProvider.fetchVegetable();
     super.initState();
   }
 
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SearchScreen()));
+                          builder: (context) =>  SearchScreen(search: productProvider.getAllProductSearch,)));
                 },
                 icon: const Center(
                   child: Icon(
@@ -147,14 +148,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical:20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Herbs seasonings"),
-                  Text(
-                    "View all",
-                    style: TextStyle(color: Colors.grey),
+                children: [
+                  const Text("Herbs seasonings"),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(search: productProvider.getHerbsProduct)));
+                    },
+                    child: const Center(
+                      child: Text(
+                        "View all",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -177,21 +185,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ));
                   },
-                  imageUrl: data.productImage.toString(),
-                  title: data.productName.toString(),
+                  productId: data.productId,
+                  productImage: data.productImage.toString(),
+                  productName: data.productName.toString(),
                   productPrice: data.productPrice.toInt(),
+
                 );
               })),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Fresh Fruits"),
-                  Text(
-                    "View all",
-                    style: TextStyle(color: Colors.grey),
+                children: [
+                  const Text("Fresh Fruits"),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(search: productProvider.freshList)));
+                    },
+                    child: const Center(
+                      child: Text(
+                        "View all",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -199,8 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List.generate(productProvider.freshFruitList.length, (index){
-                  final data= productProvider.freshFruitList[index];
+                children: List.generate(productProvider.freshList.length, (index){
+                  final data= productProvider.freshList[index];
                   return  SingleProduct(
                     onTap: () {
                       Navigator.push(
@@ -214,9 +231,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ));
                     },
-                    imageUrl:
+                    productId: data.productId,
+                    productImage:
                     data.productImage,
-                    title: data.productName,
+                    productName: data.productName,
                     productPrice: data.productPrice,
                   );
                 })
@@ -225,14 +243,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("root vegetable"),
-                  Text(
-                    "View all",
-                    style: TextStyle(color: Colors.grey),
+                children:  [
+                  const Text("root vegetable"),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(search: productProvider.vegetableList)));
+                    },
+                    child: const Center(
+                      child: Text(
+                        "View all",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -240,36 +265,25 @@ class _HomeScreenState extends State<HomeScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: [
-                  SingleProduct(
-                    onTap: () {},
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                    productPrice: 39,
-                  ),
-                  SingleProduct(
-                    onTap: () {},
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                    productPrice: 39,
-                  ),
-                  SingleProduct(
-                    onTap: () {},
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                    productPrice: 39,
-                  ),
-                  SingleProduct(
-                    onTap: () {},
-                    imageUrl:
-                        "https://assets.stickpng.com/images/58bf1e2ae443f41d77c734ab.png",
-                    title: "Basil",
-                    productPrice: 30,
-                  ),
-                ],
+                children: List.generate(productProvider.vegetableList.length, (index) {
+                   final data=productProvider.vegetableList[index];
+                  return SingleProduct(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen(
+                          productName: data.productName,
+                          productImage: data.productImage,
+                          productPrice: data.productPrice
+                      )));
+                    },
+                    productId: data.productId,
+                    productImage:
+                    data.productImage.toString(),
+                    productName: data.productName.toString(),
+                    productPrice: data.productPrice.toInt(),
+                  );
+                })
+
+
               ),
             )
           ],
