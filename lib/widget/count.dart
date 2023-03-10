@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/utility/constants.dart';
@@ -10,7 +12,13 @@ class Count extends StatefulWidget {
   final String productId;
   final int productPrice;
 
-  const Count({Key? key, required this.productName, required this.productImage, required this.productId, required this.productPrice,}) : super(key: key);
+  const Count({
+    Key? key,
+    required this.productName,
+    required this.productImage,
+    required this.productId,
+    required this.productPrice,
+  }) : super(key: key);
 
   @override
   State<Count> createState() => _CountState();
@@ -19,9 +27,31 @@ class Count extends StatefulWidget {
 class _CountState extends State<Count> {
   int count = 1;
   bool isBool = false;
+
+  getAddAndQuantity() {
+    FirebaseFirestore.instance
+        .collection("reviewCart")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("yourReviewCart").doc(widget.productId)
+        .get()
+        .then((value) =>{
+          if(mounted){
+            if(value.exists){
+              setState((){
+                count=value.get('cartQuantity');
+                isBool=value.get('isAdd');
+              })
+            }
+          }
+
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    CartProvider cartProvider=Provider.of<CartProvider>(context);
+    getAddAndQuantity();
+    CartProvider cartProvider = Provider.of<CartProvider>(context);
     return Container(
       height: 30,
       width: 50,
@@ -33,16 +63,24 @@ class _CountState extends State<Count> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
+                  onTap: ()async {
                     if (count == 1) {
                       setState(() {
                         isBool = false;
                       });
+                     await cartProvider.deleteCartData(userId: widget.productId);
                     }
-                    if (count > 1) {
+                   else if (count > 1) {
                       setState(() {
                         count--;
                       });
+                      await cartProvider.updateCartData(
+                        cartId: widget.productId,
+                        cartName: widget.productName,
+                        cartImage: widget.productImage,
+                        cartPrice: widget.productPrice,
+                        cartQuantity: count,
+                      );
                     }
                   },
                   child: const Icon(
@@ -59,10 +97,17 @@ class _CountState extends State<Count> {
                       color: Colors.yellow),
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async{
                     setState(() {
                       count++;
                     });
+                   await cartProvider.updateCartData(
+                      cartId: widget.productId,
+                      cartName: widget.productName,
+                      cartImage: widget.productImage,
+                      cartPrice: widget.productPrice,
+                      cartQuantity: count,
+                    );
                   },
                   child: const Center(
                     child: Icon(
@@ -76,17 +121,16 @@ class _CountState extends State<Count> {
             )
           : Center(
               child: InkWell(
-                onTap: () {
+                onTap: ()async {
                   setState(() {
                     isBool = true;
                   });
-                  cartProvider.addCartData(
-                      cartId: widget.productId,
-                      cartName: widget.productName,
-                      cartImage: widget.productImage,
-                      cartPrice: widget.productPrice,
-                      cartQuantity: count,
-                      isAdd: true,
+                 await cartProvider.addCartData(
+                    cartId: widget.productId,
+                    cartName: widget.productName,
+                    cartImage: widget.productImage,
+                    cartPrice: widget.productPrice,
+                    cartQuantity: count,
                   );
                 },
                 child: TextWidget(

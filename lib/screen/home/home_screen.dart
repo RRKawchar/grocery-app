@@ -179,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailsScreen(
+                            productId: data.productId,
                             productImage: data.productImage.toString(),
                             productName: data.productName.toString(),
                             productPrice: data.productPrice,
@@ -224,8 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>  DetailsScreen(
-                              productImage:
-                              data.productImage,
+                              productId: data.productId,
+                              productImage: data.productImage,
                               productName: data.productName,
                               productPrice: data.productPrice,
                             ),
@@ -270,6 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return SingleProduct(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen(
+                          productId: data.productId,
                           productName: data.productName,
                           productImage: data.productImage,
                           productPrice: data.productPrice

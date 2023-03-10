@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/providers/wish_list_provider.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
+import 'package:provider/provider.dart';
 
 enum SingInCharacter{fill,outLine}
 
@@ -10,7 +12,8 @@ class DetailsScreen extends StatefulWidget {
   final String productName;
   final String productImage;
   final int productPrice;
-  const DetailsScreen({Key? key, required this.productName, required this.productImage,required this.productPrice}) : super(key: key);
+  final String productId;
+  const DetailsScreen({Key? key, required this.productName, required this.productImage,required this.productPrice, required this.productId}) : super(key: key);
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -20,8 +23,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
    SingInCharacter _singInCharacter=SingInCharacter.fill;
 
+   bool wishListBool=false;
+
   @override
   Widget build(BuildContext context) {
+
+    WishListProvider wishListProvider=Provider.of<WishListProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -121,10 +128,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
       bottomNavigationBar: Row(
         children: [
           bottomNavigationBar(
-            icon: Icons.favorite_outline,
+            icon:wishListBool==false? Icons.favorite_outline:Icons.favorite,
             title: "Add To WishList",
             backgroundColor: primaryColor,
             textColor: textColor,
+            onTap: (){
+              setState(() {
+                wishListBool=!wishListBool;
+              });
+
+              if(wishListBool==false){
+                wishListProvider.addWishListData(
+                    wishListId: widget.productId,
+                    wishListName: widget.productName,
+                    wishListImage: widget.productImage,
+                    wishListPrice: widget.productPrice,
+                    wishListQuantity: 2
+                );
+              }
+            }
           ),
           bottomNavigationBar(
               icon: Icons.shop_outlined,
@@ -143,28 +165,32 @@ class _DetailsScreenState extends State<DetailsScreen> {
     Color? textColor,
     required IconData icon,
     required String title,
+    VoidCallback? onTap,
   }) {
     return Expanded(
-        child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
       padding: const EdgeInsets.all(20),
       color: backgroundColor,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: iconColor,
-            size: 17,
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          TextWidget(
-            text: title,
-            color: textColor,
-          )
-        ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: iconColor,
+              size: 17,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            TextWidget(
+              text: title,
+              color: textColor,
+            )
+          ],
       ),
-    ));
+    ),
+        ));
   }
 }

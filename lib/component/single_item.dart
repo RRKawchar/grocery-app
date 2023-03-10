@@ -112,12 +112,15 @@ class SingleItems extends StatelessWidget {
                         )
                       : Column(
                           children: [
-                             InkWell(
-                               onTap: onTap,
-                               child: Icon(
-                                Icons.delete,
-                                color: Colors.black54,
+                             Padding(
+                               padding: const EdgeInsets.only(top: 1),
+                               child: InkWell(
+                                 onTap: onTap,
+                                 child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.black54,
                             ),
+                               ),
                              ),
                             const SizedBox(
                               height: 5,
@@ -132,15 +135,19 @@ class SingleItems extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Icon(
-                                    Icons.add,
+                                    Icons.remove,
                                     color: Colors.yellow,
                                   ),
                                   Expanded(
                                     child: TextWidget(
-                                      text: "ADD",
+                                      text: "1",
                                       color: Colors.yellow,
                                     ),
-                                  )
+                                  ),
+                                  const Icon(
+                                    Icons.add,
+                                    color: Colors.yellow,
+                                  ),
                                 ],
                               ),
                             )

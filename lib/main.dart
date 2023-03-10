@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
 import 'package:grocery_app/providers/product_provider.dart';
 import 'package:grocery_app/providers/user_porvider.dart';
+import 'package:grocery_app/providers/wish_list_provider.dart';
 import 'package:grocery_app/screen/auth/sign_in_screen.dart';
 import 'package:grocery_app/screen/home/home_screen.dart';
 import 'package:grocery_app/utility/constants.dart';
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<CartProvider>(
           create: (context) => CartProvider(),
+        ),
+        ChangeNotifierProvider<WishListProvider>(
+          create: (context) => WishListProvider(),
         ),
       ],
       child: MaterialApp(

@@ -36,46 +36,49 @@ class SingleProduct extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: Text(productName,maxLines: 2,overflow: TextOverflow.ellipsis,)),
+                    Expanded(child: Text(productName,maxLines: 1,overflow: TextOverflow.ellipsis,)),
                      Text(
                       "$productPrice\$/50 gram",
                       style:const TextStyle(fontSize: 15, color: Colors.black),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 2),
-                              height: 30,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Row(
-                                children: const [
-                                  Expanded(
-                                      child: Text(
-                                        "50 gram",
-                                        style: TextStyle(fontSize: 10),
-                                      )),
-                                  Center(
-                                      child: Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 20,
-                                        color: Colors.yellow,
-                                      ))
-                                ],
-                              ),
-                            )),
-                        const SizedBox(width: 5),
-                         Expanded(
-                            child: Count(
-                              productId: productId,
-                              productName: productName,
-                              productImage: productImage,
-                              productPrice: productPrice,
-                            )),
-                      ],
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 2),
+                                height: 30,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Row(
+                                  children: const [
+                                    Expanded(
+                                        child: Text(
+                                          "50 gram",
+                                          style: TextStyle(fontSize: 10),
+                                        )),
+                                    Center(
+                                        child: Icon(
+                                          Icons.arrow_drop_down,
+                                          size: 10,
+                                          color: Colors.yellow,
+                                        ))
+                                  ],
+                                ),
+                              )),
+                          const SizedBox(width: 5),
+                           Expanded(
+                              child:Count(
+                                productId: productId,
+                                productName: productName,
+                                productImage: productImage,
+                                productPrice: productPrice,
+
+                              )),
+                        ],
+                      ),
                     )
                   ],
                 ),
