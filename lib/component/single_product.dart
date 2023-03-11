@@ -45,27 +45,32 @@ class SingleProduct extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 2),
-                                height: 30,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: Row(
-                                  children: const [
-                                    Expanded(
-                                        child: Text(
-                                          "50 gram",
-                                          style: TextStyle(fontSize: 10),
-                                        )),
-                                    Center(
-                                        child: Icon(
-                                          Icons.arrow_drop_down,
-                                          size: 10,
-                                          color: Colors.yellow,
-                                        ))
-                                  ],
+                              child: InkWell(
+                                onTap: (){
+                                  _showModelSheet(context);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 2),
+                                  height: 30,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Row(
+                                    children: const [
+                                      Expanded(
+                                          child: Text(
+                                            "50 gram",
+                                            style: TextStyle(fontSize: 10),
+                                          )),
+                                      Center(
+                                          child: Icon(
+                                            Icons.arrow_drop_down,
+                                            size: 10,
+                                            color: Colors.yellow,
+                                          ))
+                                    ],
+                                  ),
                                 ),
                               )),
                           const SizedBox(width: 5),
@@ -88,5 +93,29 @@ class SingleProduct extends StatelessWidget {
     );
   }
 
-
+  void _showModelSheet(context){
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc){
+          return Container(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    title: const Text('50 Gram'),
+                    onTap: () => {}
+                ),
+                ListTile(
+                  title: const Text('500 Gram'),
+                  onTap: () => {},
+                ),
+                ListTile(
+                  title: const Text('1 kg'),
+                  onTap: () => {},
+                ),
+              ],
+            ),
+          );
+        }
+    );
+  }
 }

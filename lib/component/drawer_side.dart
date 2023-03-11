@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/screen/my_profile/profile_screen.dart';
 import 'package:grocery_app/screen/review_cart/review_cart.dart';
+import 'package:grocery_app/screen/wish_list/wish_list_screen.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 
@@ -86,7 +87,9 @@ class DrawerSide extends StatelessWidget {
                 icon: Icons.star_outline,
                 title: "Rating & Review"),
             listTile(
-                onTap: () {}, icon: Icons.favorite_outline, title: "Wishlist"),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> WishListScreen()));
+                }, icon: Icons.favorite_outline, title: "Wishlist"),
             listTile(
                 onTap: () {},
                 icon: Icons.copy_outlined,

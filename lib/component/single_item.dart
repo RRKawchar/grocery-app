@@ -6,11 +6,12 @@ class SingleItems extends StatelessWidget {
   bool isBool = false;
   String productImage;
   String productName;
+  bool wishList ;
   int productPrice;
   String cartId;
   int productQuantity;
   VoidCallback? onTap;
-  SingleItems({Key? key, required this.isBool,required this.productImage,required this.productName,required this.productPrice,required this.cartId,required this.productQuantity, this.onTap}) : super(key: key);
+  SingleItems({Key? key, required this.isBool,required this.productImage,required this.productName, this.wishList=false,required this.productPrice,required this.cartId,required this.productQuantity, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +126,7 @@ class SingleItems extends StatelessWidget {
                             const SizedBox(
                               height: 5,
                             ),
-                            Container(
+                           wishList==true? Container(
                               height: 25,
                               width: 70,
                               decoration: BoxDecoration(
@@ -150,7 +151,7 @@ class SingleItems extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
+                            ):Container(),
                           ],
                         ),
                 ),

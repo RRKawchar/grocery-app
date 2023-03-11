@@ -8,12 +8,14 @@ class UserProvider with ChangeNotifier {
       required String userName,
       required String userEmail,
       required String userImage,
+      required String phoneNumber,
       }) async {
     FirebaseFirestore.instance.collection("userData").doc(currentUser.uid).set({
       "userName": userName,
       "userEmail": userEmail,
       "userImage": userImage,
       "userUid": currentUser.uid,
+      "phoneNumber":currentUser.phoneNumber,
     });
     notifyListeners();
   }

@@ -34,10 +34,9 @@ class _SignInScreenState extends State<SignInScreen> {
       userProvider.addUserData(
           currentUser: user!,
           userName: user.displayName.toString(),
-          userEmail: user.email.toString()
-          , userImage: user.photoURL.toString(),
-
-      );
+          userEmail: user.email.toString(),
+          userImage: user.photoURL.toString(),
+          phoneNumber: user.phoneNumber.toString());
 
       return user;
     } catch (e) {
@@ -48,7 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    userProvider=Provider.of<UserProvider>(context);
+    userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -66,13 +65,19 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextWidget(text: 'Sign in to continue'),
-                  TextWidget(text: 'Grocery',size: 50,color: Colors.white,fontWeight: FontWeight.bold,shadow: [
-                    BoxShadow(
-                        blurRadius: 8,
-                        color: Colors.green.shade900,
-                        blurStyle: BlurStyle.outer,
-                        offset: const Offset(2, 2))
-                  ],),
+                  TextWidget(
+                    text: 'Grocery',
+                    size: 50,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    shadow: [
+                      BoxShadow(
+                          blurRadius: 8,
+                          color: Colors.green.shade900,
+                          blurStyle: BlurStyle.outer,
+                          offset: const Offset(2, 2))
+                    ],
+                  ),
                   Column(
                     children: [
                       SignInButton(
@@ -80,23 +85,27 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: "Sign up with Apple",
                         onPressed: () {},
                       ),
-                      SignInButton(
-                        Buttons.Google,
-                        text: "Sign up with Google",
-                        onPressed: ()async{
-                          await _googleSignIn().then((value) =>
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) =>  HomeScreen()),),);
-                        }
-                      ),
+                      SignInButton(Buttons.Google, text: "Sign up with Google",
+                          onPressed: () async {
+                        await _googleSignIn().then(
+                          (value) => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen()),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                   Column(
                     children: [
-                      TextWidget(text: "By signing in you are agreeing to our",color: Colors.grey[800],),
-                      TextWidget(text: "terms and privacy policy",color: Colors.grey[800],),
-
+                      TextWidget(
+                        text: "By signing in you are agreeing to our",
+                        color: Colors.grey[800],
+                      ),
+                      TextWidget(
+                        text: "terms and privacy policy",
+                        color: Colors.grey[800],
+                      ),
                     ],
                   ),
                 ],

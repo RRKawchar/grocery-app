@@ -32,6 +32,7 @@ class ReviewCart extends StatelessWidget {
                 const SizedBox(height: 10,),
                 SingleItems(
                   isBool: true,
+                  wishList: true,
                   productImage: data.cartImage,
                   productName: data.cartName,
                   productPrice: data.cartPrice,
