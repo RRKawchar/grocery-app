@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/component/drawer_side.dart';
 import 'package:grocery_app/component/single_product.dart';
 import 'package:grocery_app/providers/product_provider.dart';
+import 'package:grocery_app/providers/user_porvider.dart';
 import 'package:grocery_app/screen/details/details_screen.dart';
+import 'package:grocery_app/screen/review_cart/review_cart.dart';
 import 'package:grocery_app/screen/search/search_screen.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
@@ -17,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   ProductProvider productProvider = ProductProvider();
-
   @override
   void initState() {
     ProductProvider productProvider = Provider.of(context, listen: false);
@@ -30,9 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     productProvider = Provider.of(context);
+    UserProvider userProvider=Provider.of<UserProvider>(context);
+    userProvider.getUserData();
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      drawer: const DrawerSide(),
+      drawer: DrawerSide(userProvider: userProvider),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: const Color(0xffd6b738),
@@ -49,7 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>  SearchScreen(search: productProvider.getAllProductSearch,)));
+                          builder: (context) => SearchScreen(
+                                search: productProvider.getAllProductSearch,
+                              )));
                 },
                 icon: const Center(
                   child: Icon(
@@ -59,15 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: CircleAvatar(
-              radius: 15,
-              backgroundColor: circleBg,
-              child: Icon(
-                Icons.shop,
-                size: 17,
-                color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReviewCart()));
+              },
+              child: const CircleAvatar(
+                radius: 15,
+                backgroundColor: circleBg,
+                child: Icon(
+                  Icons.shop,
+                  size: 17,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
@@ -148,14 +159,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical:20),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text("Herbs seasonings"),
                   InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(search: productProvider.getHerbsProduct)));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchScreen(
+                                  search: productProvider.getHerbsProduct)));
                     },
                     child: const Center(
                       child: Text(
@@ -190,7 +205,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   productImage: data.productImage.toString(),
                   productName: data.productName.toString(),
                   productPrice: data.productPrice.toInt(),
-
                 );
               })),
             ),
@@ -201,8 +215,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const Text("Fresh Fruits"),
                   InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(search: productProvider.freshList)));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchScreen(
+                                  search: productProvider.freshList)));
                     },
                     child: const Center(
                       child: Text(
@@ -217,41 +235,42 @@ class _HomeScreenState extends State<HomeScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List.generate(productProvider.freshList.length, (index){
-                  final data= productProvider.freshList[index];
-                  return  SingleProduct(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>  DetailsScreen(
-                              productId: data.productId,
-                              productImage: data.productImage,
-                              productName: data.productName,
-                              productPrice: data.productPrice,
-                            ),
-                          ));
-                    },
-                    productId: data.productId,
-                    productImage:
-                    data.productImage,
-                    productName: data.productName,
-                    productPrice: data.productPrice,
-                  );
-                })
-
-
-              ),
+                  children:
+                      List.generate(productProvider.freshList.length, (index) {
+                final data = productProvider.freshList[index];
+                return SingleProduct(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                            productId: data.productId,
+                            productImage: data.productImage,
+                            productName: data.productName,
+                            productPrice: data.productPrice,
+                          ),
+                        ));
+                  },
+                  productId: data.productId,
+                  productImage: data.productImage,
+                  productName: data.productName,
+                  productPrice: data.productPrice,
+                );
+              })),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
+                children: [
                   const Text("root vegetable"),
                   InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchScreen(search: productProvider.vegetableList)));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchScreen(
+                                  search: productProvider.vegetableList)));
                     },
                     child: const Center(
                       child: Text(
@@ -266,27 +285,26 @@ class _HomeScreenState extends State<HomeScreen> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: List.generate(productProvider.vegetableList.length, (index) {
-                   final data=productProvider.vegetableList[index];
-                  return SingleProduct(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailsScreen(
-                          productId: data.productId,
-                          productName: data.productName,
-                          productImage: data.productImage,
-                          productPrice: data.productPrice
-                      )));
-                    },
-                    productId: data.productId,
-                    productImage:
-                    data.productImage.toString(),
-                    productName: data.productName.toString(),
-                    productPrice: data.productPrice.toInt(),
-                  );
-                })
-
-
-              ),
+                  children: List.generate(productProvider.vegetableList.length,
+                      (index) {
+                final data = productProvider.vegetableList[index];
+                return SingleProduct(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailsScreen(
+                                productId: data.productId,
+                                productName: data.productName,
+                                productImage: data.productImage,
+                                productPrice: data.productPrice)));
+                  },
+                  productId: data.productId,
+                  productImage: data.productImage.toString(),
+                  productName: data.productName.toString(),
+                  productPrice: data.productPrice.toInt(),
+                );
+              })),
             )
           ],
         ),

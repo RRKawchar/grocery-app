@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/providers/wish_list_provider.dart';
+import 'package:grocery_app/screen/review_cart/review_cart.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/count.dart';
 import 'package:grocery_app/widget/textWidget.dart';
@@ -35,17 +36,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
     FirebaseFirestore.instance
         .collection("wishList")
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection("yourWishList").doc(widget.productId)
-        .get().then((value) =>{
-         if(mounted){
-           if(value.exists){
-             setState((){
-               wishListBool=value.get('wishList');
-             })
-           }
-
-         }
-    });
+        .collection("yourWishList")
+        .doc(widget.productId)
+        .get()
+        .then((value) => {
+              if (mounted)
+                {
+                  if (value.exists)
+                    {
+                      setState(() {
+                        wishListBool = value.get('wishList');
+                      })
+                    }
+                }
+            });
   }
 
   @override
@@ -111,10 +115,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                         TextWidget(text: "\$50"),
                         Count(
-                            productName: widget.productName,
-                            productImage: widget.productImage,
-                            productId: widget.productId,
-                            productPrice: widget.productPrice,
+                          productName: widget.productName,
+                          productImage: widget.productImage,
+                          productId: widget.productId,
+                          productPrice: widget.productPrice,
                         )
                         // Container(
                         //   padding: const EdgeInsets.symmetric(
@@ -188,7 +192,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       wishListImage: widget.productImage,
                       wishListPrice: widget.productPrice,
                       wishListQuantity: 2);
-                }else{
+                } else {
                   wishListProvider.deleteWishList(wishListId: widget.productId);
                 }
               }),
@@ -197,7 +201,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
               title: "Go to cart",
               backgroundColor: Colors.black87,
               textColor: Colors.white,
-              iconColor: Colors.white),
+              iconColor: Colors.white,
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ReviewCart()));
+              }
+          ),
         ],
       ),
     );

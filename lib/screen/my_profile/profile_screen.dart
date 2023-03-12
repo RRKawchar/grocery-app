@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/component/drawer_side.dart';
+import 'package:grocery_app/providers/user_porvider.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final UserProvider userProvider;
+  const ProfileScreen({Key? key,required this.userProvider}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final userData=userProvider.currentUserList;
     return Scaffold(
       backgroundColor: primaryColor,
-      drawer: const DrawerSide(),
+      drawer:  DrawerSide(userProvider: userProvider,),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0.0,
@@ -51,9 +54,9 @@ class ProfileScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                     TextWidget(text: "Riyazur Rohman Kawchar",size: 14,color: textColor,),
+                                     TextWidget(text: userData.userName??"",size: 14,color: textColor,),
                                      const SizedBox(height: 10,),
-                                     TextWidget(text: "riyazurrohmankawchar@gmail.com",size: 12,color: textColor,),
+                                     TextWidget(text: userData.userEmail??"",size: 12,color: textColor,),
 
                                   ],
                                 ),
@@ -90,11 +93,13 @@ class ProfileScreen extends StatelessWidget {
               child: CircleAvatar(
                 radius: 45,
                 backgroundColor: scaffoldBackgroundColor,
-                backgroundImage: const NetworkImage(
+                backgroundImage: NetworkImage(
+
+                 userData.userImage.isNotEmpty?userData.userImage:
                     "https://png.pngtree.com/thumb_back/fw800/back_our/20190621/ourmid/pngtree-yellow-vegetable-and-fruit-background-main-picture-image_182664.jpg"),
                 child: Center(
                   child: TextWidget(
-                    text: "Grocery",
+                    text:userData.userImage.isNotEmpty?"":"Grocery",
                     color: Colors.white,
                     size: 19,
                     fontWeight: FontWeight.bold,
