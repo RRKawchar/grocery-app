@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: primaryColor,
         ),
-        home: const SignInScreen(),
+        home:  HomeScreen(),
       ),
     );
   }
