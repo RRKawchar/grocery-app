@@ -198,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             productImage: data.productImage.toString(),
                             productName: data.productName.toString(),
                             productPrice: data.productPrice,
+
                           ),
                         ));
                   },
@@ -205,6 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   productImage: data.productImage.toString(),
                   productName: data.productName.toString(),
                   productPrice: data.productPrice.toInt(),
+                  productUnit: data,
                 );
               })),
             ),
@@ -255,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   productImage: data.productImage,
                   productName: data.productName,
                   productPrice: data.productPrice,
+                  productUnit: data,
                 );
               })),
             ),
@@ -303,6 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   productImage: data.productImage.toString(),
                   productName: data.productName.toString(),
                   productPrice: data.productPrice.toInt(),
+                  productUnit: data,
                 );
               })),
             )

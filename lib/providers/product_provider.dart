@@ -12,7 +12,8 @@ class ProductProvider with ChangeNotifier {
       productImage: data.get("productImage"),
       productPrice: data.get("productPrice"),
       productId: data.get('productId'),
-      productQuantity: data.get('productQuantity')
+      productQuantity: data.get('productQuantity'),
+      productUnit: data.get('productUnit'),
     );
     search.add(productModel);
   }

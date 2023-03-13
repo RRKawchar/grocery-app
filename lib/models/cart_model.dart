@@ -4,12 +4,13 @@ class CartModel {
   String cartImage;
   int cartPrice;
   int cartQuantity;
-
+  var cartUnit;
   CartModel({
     required this.cartId,
     required this.cartName,
     required this.cartImage,
     required this.cartPrice,
     required this.cartQuantity,
+    required this.cartUnit,
   });
 }

@@ -1,25 +1,46 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/models/product_model.dart';
+import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/build_image.dart';
 import 'package:grocery_app/widget/count.dart';
+import 'package:grocery_app/widget/product_unit.dart';
+import 'package:grocery_app/widget/textWidget.dart';
 
-class SingleProduct extends StatelessWidget {
+class SingleProduct extends StatefulWidget {
   final String productImage;
   final String productName;
   final int productPrice;
   final void Function() onTap;
   final String productId;
+  final ProductModel productUnit;
   const SingleProduct(
       {Key? key,
       required this.onTap,
       required this.productImage,
       required this.productName,
       required this.productPrice,
-      required this.productId})
+      required this.productId,
+      required this.productUnit})
       : super(key: key);
 
   @override
+  State<SingleProduct> createState() => _SingleProductState();
+}
+
+class _SingleProductState extends State<SingleProduct> {
+
+  var unitData;
+  var firstValue;
+  @override
   Widget build(BuildContext context) {
+
+    widget.productUnit.productUnit.firstWhere((element){
+      setState(() {
+         firstValue=element;
+      });
+      return true;
+    });
     final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.all(5),
@@ -36,10 +57,10 @@ class SingleProduct extends StatelessWidget {
           Expanded(
               flex: 2,
               child: InkWell(
-                  onTap: onTap,
+                  onTap: widget.onTap,
                   child: BuildImage(
                     size: size,
-                    imgUrl: productImage,
+                    imgUrl: widget.productImage,
                   ))),
           Expanded(
               child: Padding(
@@ -49,53 +70,35 @@ class SingleProduct extends StatelessWidget {
               children: [
                 Expanded(
                     child: Text(
-                  productName,
+                  widget.productName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 )),
                 Text(
-                  "$productPrice\$/50 gram",
+                  "${widget.productPrice}\$/${unitData ?? firstValue}",
                   style: const TextStyle(fontSize: 15, color: Colors.black),
                 ),
                 Expanded(
                   child: Row(
                     children: [
                       Expanded(
-                          child: InkWell(
+                          child: ProductUnit(
                         onTap: () {
                           _showModelSheet(context);
                         },
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 2),
-                          height: 30,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Row(
-                            children: const [
-                              Expanded(
-                                  child: Text(
-                                "50 gram",
-                                style: TextStyle(fontSize: 10),
-                              )),
-                              Center(
-                                  child: Icon(
-                                Icons.arrow_drop_down,
-                                size: 10,
-                                color: Colors.yellow,
-                              ))
-                            ],
+                        title: unitData ?? firstValue,
+                      )
+
+
                           ),
-                        ),
-                      )),
                       const SizedBox(width: 5),
                       Expanded(
                           child: Count(
-                        productId: productId,
-                        productName: productName,
-                        productImage: productImage,
-                        productPrice: productPrice,
+                        productId: widget.productId,
+                        productName: widget.productName,
+                        productImage: widget.productImage,
+                        productPrice: widget.productPrice,
+                            productUnit: unitData ?? firstValue,
                       )),
                     ],
                   ),
@@ -112,20 +115,27 @@ class SingleProduct extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return Container(
-            child: Wrap(
-              children: <Widget>[
-                ListTile(title: const Text('50 Gram'), onTap: () => {}),
-                ListTile(
-                  title: const Text('500 Gram'),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  title: const Text('1 kg'),
-                  onTap: () => {},
-                ),
-              ],
-            ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.productUnit.productUnit.map<Widget>((data){
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    child: InkWell(
+                      onTap: ()async{
+                        setState(() {
+                          unitData=data;
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: TextWidget(text: data,size: 18,color: primaryColor,),
+                    ),
+                  )
+                ],
+              );
+            }).toList(),
           );
         });
   }

@@ -38,6 +38,7 @@ class ReviewCart extends StatelessWidget {
                   productPrice: data.cartPrice,
                   cartId: data.cartId,
                   productQuantity: data.cartQuantity,
+                  productUnit: data.cartUnit,
                   onTap: (){
                    showAlertDialog(context,data);
                   },

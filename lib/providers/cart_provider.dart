@@ -11,6 +11,7 @@ class CartProvider with ChangeNotifier {
       required String cartImage,
       required int cartPrice,
       required int cartQuantity,
+        var cartUrni,
       }) async {
    await FirebaseFirestore.instance
         .collection('reviewCart')
@@ -23,6 +24,7 @@ class CartProvider with ChangeNotifier {
       "cartImage": cartImage,
       "cartPrice": cartPrice,
       'cartQuantity': cartQuantity,
+       'cartUnit':cartUrni,
       "isAdd":true,
     });
   }
@@ -65,6 +67,7 @@ class CartProvider with ChangeNotifier {
         cartImage: element.get('cartImage'),
         cartPrice: element.get('cartPrice'),
         cartQuantity: element.get('cartQuantity'),
+        cartUnit: element.get('cartUnit'),
       );
       newList.add(cartModel);
     });

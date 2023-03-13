@@ -14,6 +14,7 @@ class SingleItems extends StatefulWidget {
   int productPrice;
   String cartId;
   int productQuantity;
+  var productUnit;
   VoidCallback? onTap;
   SingleItems(
       {Key? key,
@@ -24,7 +25,8 @@ class SingleItems extends StatefulWidget {
       required this.productPrice,
       required this.cartId,
       required this.productQuantity,
-      this.onTap})
+         this.productUnit,
+      this.onTap,})
       : super(key: key);
 
   @override
@@ -122,7 +124,7 @@ class _SingleItemsState extends State<SingleItems> {
                                 ),
                               ),
                             )
-                          : const Text("50 gram")
+                          : Text(widget.productUnit)
                     ],
                   ),
                 ),
