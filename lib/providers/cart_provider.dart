@@ -89,4 +89,17 @@ class CartProvider with ChangeNotifier {
         .delete();
     notifyListeners();
   }
+
+  /// total Price..................
+ getTotalPrice(){
+    double total=0.0;
+   cartDataList.forEach((element) {
+     total+= element.cartPrice*element.cartQuantity;
+
+   });
+
+   return total;
+ }
+
+
 }

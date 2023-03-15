@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:grocery_app/component/single_item.dart';
 import 'package:grocery_app/models/cart_model.dart';
 import 'package:grocery_app/providers/cart_provider.dart';
+import 'package:grocery_app/screen/check_out/delevery_details/delivery_details.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +51,7 @@ class ReviewCart extends StatelessWidget {
 
       bottomNavigationBar:ListTile(
       title: TextWidget(text: "Total Amount",),
-        subtitle: TextWidget(text: "\$ 170.00",color: Colors.green[900],),
+        subtitle: TextWidget(text: "\$ ${cartProvider.getTotalPrice()}",color: Colors.green[900],),
         trailing: Container(
           width: 160,
           child: MaterialButton(
@@ -57,7 +59,14 @@ class ReviewCart extends StatelessWidget {
               borderRadius: BorderRadius.circular(30)
             ),
             color: primaryColor,
-            onPressed: (){},
+            onPressed: (){
+              if(cartProvider.getCartDataList.isEmpty){
+                Fluttertoast.showToast(msg: "No cart data found");
+              }else{
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const DeliveryDetails()));
+              }
+
+            },
             child: const Text('Submit'),
           ),
         ),
