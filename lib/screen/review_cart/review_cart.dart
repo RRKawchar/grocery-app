@@ -63,7 +63,7 @@ class ReviewCart extends StatelessWidget {
               if(cartProvider.getCartDataList.isEmpty){
                 Fluttertoast.showToast(msg: "No cart data found");
               }else{
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const DeliveryDetails()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> DeliveryDetails()));
               }
 
             },

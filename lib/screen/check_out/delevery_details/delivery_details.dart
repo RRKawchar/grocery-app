@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/screen/check_out/add_delivery_address/add_delivery_address.dart';
 import 'package:grocery_app/screen/check_out/delevery_details/single_delivery_items.dart';
+import 'package:grocery_app/screen/check_out/payment_summary/payment_summary.dart';
 import 'package:grocery_app/utility/constants.dart';
 
 class DeliveryDetails extends StatelessWidget {
-  const DeliveryDetails({Key? key}) : super(key: key);
+  List<Widget> address = [
+    SingleDeliveryItems(
+      address: "Dhaka/Bangladesh, sector 14, road 22, house 12",
+      title: "Riyazur Rohman Kawchar",
+      addressType: "Home",
+      number: "028545455646554",
+    ),
+  ];
+
+  DeliveryDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +25,34 @@ class DeliveryDetails extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
-        onPressed: (){},
+        onPressed: () {},
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: MaterialButton(
           height: 48,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30)
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           color: primaryColor,
-          onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> AddDeliveryAddress(),),);
+          onPressed: () {
+            address.isEmpty
+                ? Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddDeliveryAddress(),
+                    ),
+                  )
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PaymentSummary(),
+                    ),
+                  );
           },
-          child: const Text("Add new Address"),
+          child: address.isEmpty
+              ? const Text("Add new Address")
+              : const Text("Payment summary"),
         ),
       ),
       body: ListView(
@@ -43,12 +66,12 @@ class DeliveryDetails extends StatelessWidget {
           ),
           Column(
             children: [
-              SingleDeliveryItems(
+              address.isNotEmpty ? SingleDeliveryItems(
                 address: "Dhaka/Bangladesh, sector 14, road 22, house 12",
                 title: "Riyazur Rohman Kawchar",
                 addressType: "Home",
                 number: "028545455646554",
-              )
+              ) : Container(),
             ],
           )
         ],
