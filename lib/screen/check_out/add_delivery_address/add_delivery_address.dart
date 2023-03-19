@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/providers/check_out_provider.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/custom_text_field.dart';
 import 'package:grocery_app/widget/textWidget.dart';
+import 'package:provider/provider.dart';
 
 class AddDeliveryAddress extends StatefulWidget {
   @override
@@ -16,6 +18,8 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
   var myType = AddressType.home;
   @override
   Widget build(BuildContext context) {
+    CheckOutProvider checkOutProvider=Provider.of<CheckOutProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -27,63 +31,65 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         height: 48,
-        child: MaterialButton( 
+        child:checkOutProvider.isLoading==false? MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          onPressed: () {},
+          onPressed: () {
+            checkOutProvider.validator(context,myType);
+          },
           color: primaryColor,
           child: TextWidget(
             text: "Add Address",
             color: textColor,
           ),
-        ),
+        ):const Center(child: CircularProgressIndicator(),),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
           children: [
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.firstName,
               labelText: "Firs name",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.lastName,
               labelText: "Last name",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.countryName,
               labelText: "Country name",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.cityName,
               labelText: "City",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.mobile,
               labelText: "Mobile Number",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.alMobile,
               labelText: "Alternative Mobile No",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.roadNo,
               labelText: "Road No",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.houseNo,
               labelText: "House no",
               keyboardType: TextInputType.text,
             ),
             CustomTextField(
-              controller: controller,
+              controller: checkOutProvider.pinCode,
               labelText: "Pin code",
               keyboardType: TextInputType.text,
             ),
