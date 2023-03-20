@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/providers/check_out_provider.dart';
+import 'package:grocery_app/screen/check_out/google_map/google_map.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/custom_text_field.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:provider/provider.dart';
 
 class AddDeliveryAddress extends StatefulWidget {
+
+  const AddDeliveryAddress({super.key});
+
   @override
   State<AddDeliveryAddress> createState() => _AddDeliveryAddressState();
 }
@@ -94,7 +98,9 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
               keyboardType: TextInputType.text,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomGoogleMap()));
+              },
               child: Container(
                 height: 48,
                 width: double.infinity,
