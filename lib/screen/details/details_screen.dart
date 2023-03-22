@@ -119,6 +119,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           productImage: widget.productImage,
                           productId: widget.productId,
                           productPrice: widget.productPrice,
+                          productUnit: '500 gram',
                         )
                         // Container(
                         //   padding: const EdgeInsets.symmetric(

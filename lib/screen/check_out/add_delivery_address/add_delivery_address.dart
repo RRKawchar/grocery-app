@@ -7,7 +7,6 @@ import 'package:grocery_app/widget/textWidget.dart';
 import 'package:provider/provider.dart';
 
 class AddDeliveryAddress extends StatefulWidget {
-
   const AddDeliveryAddress({super.key});
 
   @override
@@ -22,7 +21,7 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
   var myType = AddressType.home;
   @override
   Widget build(BuildContext context) {
-    CheckOutProvider checkOutProvider=Provider.of<CheckOutProvider>(context);
+    CheckOutProvider checkOutProvider = Provider.of<CheckOutProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,18 +34,22 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         height: 48,
-        child:checkOutProvider.isLoading==false? MaterialButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          onPressed: () {
-            checkOutProvider.validator(context,myType);
-          },
-          color: primaryColor,
-          child: TextWidget(
-            text: "Add Address",
-            color: textColor,
-          ),
-        ):const Center(child: CircularProgressIndicator(),),
+        child: checkOutProvider.isLoading == false
+            ? MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                onPressed: () {
+                  checkOutProvider.validator(context, myType);
+                },
+                color: primaryColor,
+                child: TextWidget(
+                  text: "Add Address",
+                  color: textColor,
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -99,7 +102,10 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomGoogleMap()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CustomGoogleMap()));
               },
               child: Container(
                 height: 48,
@@ -107,7 +113,12 @@ class _AddDeliveryAddressState extends State<AddDeliveryAddress> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [TextWidget(text: "Set Location")],
+                  children: [
+                     checkOutProvider.setLocation==null?
+                      TextWidget(text: "Set Location"):TextWidget(text: "Done!"),
+                    //TextWidget(text: "Set Location"),
+                  ],
+
                 ),
               ),
             ),

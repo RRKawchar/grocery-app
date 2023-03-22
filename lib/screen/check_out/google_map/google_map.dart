@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:grocery_app/providers/check_out_provider.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({Key? key}) : super(key: key);
@@ -32,6 +34,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   final LatLng _initialCameraPosition = const LatLng(20.5937, 78.9629);
   @override
   Widget build(BuildContext context) {
+    CheckOutProvider checkOutProvider=Provider.of<CheckOutProvider>(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
@@ -56,7 +59,16 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
                     width: double.infinity,
                     margin: const EdgeInsets.only(right: 60,left: 10,bottom: 40,top: 40),
                     child: MaterialButton(
-                      onPressed: (){},
+                      onPressed: ()async{
+                        await _location.getLocation().then((value){
+
+
+                         setState(() {
+                           checkOutProvider.setLocation=value;
+                         });
+                        });
+                        Navigator.of(context).pop();
+                      },
                       color: primaryColor,
                       shape: const StadiumBorder(),
                       child: TextWidget(text: "Set Location",),
