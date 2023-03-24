@@ -16,7 +16,7 @@ class CheckOutProvider with ChangeNotifier {
   TextEditingController roadNo = TextEditingController();
   TextEditingController houseNo = TextEditingController();
   TextEditingController pinCode = TextEditingController();
-   LocationData? setLocation;
+  LocationData? setLocation;
 
   void validator(context, myType) async {
     if (firstName.text.isEmpty) {
@@ -37,7 +37,7 @@ class CheckOutProvider with ChangeNotifier {
       Fluttertoast.showToast(msg: 'House No is Empty');
     } else if (pinCode.text.isEmpty) {
       Fluttertoast.showToast(msg: 'Pin code is Empty');
-    } else if (setLocation==null) {
+    } else if (setLocation == null) {
       Fluttertoast.showToast(msg: 'Location is Empty');
     } else {
       isLoading = true;
@@ -56,8 +56,8 @@ class CheckOutProvider with ChangeNotifier {
         "houseNo": houseNo.text,
         "picCode": pinCode.text,
         "addressType": myType.toString(),
-        'longitude':setLocation!.longitude.toString(),
-         "latitude":setLocation!.latitude.toString(),
+        'longitude': setLocation!.longitude.toString(),
+        "latitude": setLocation!.latitude.toString(),
       }).then((value) async {
         isLoading = false;
         notifyListeners();
@@ -69,28 +69,33 @@ class CheckOutProvider with ChangeNotifier {
     }
   }
 
-
-   getDeliveryAddressData()async{
+  List<DeliveryAddressModel> _deliveryAddressList = [];
+  getDeliveryAddressData() async {
+    List<DeliveryAddressModel> newList = [];
     DeliveryAddressModel deliveryAddressModel;
-   DocumentSnapshot _db= await FirebaseFirestore.instance
+    DocumentSnapshot _db = await FirebaseFirestore.instance
         .collection('addDeliveryAddress')
-        .doc(FirebaseAuth.instance.currentUser!.uid).get();
-    if(_db.exists){
-      deliveryAddressModel=DeliveryAddressModel(
-          firstName: _db.get('firstName'),
-          lastName: _db.get('lastName'),
-          countryName: _db.get('countryName'),
-          cityName: _db.get('cityName'),
-          mobile: _db.get('mobile'),
-          alMobile: _db.get('alMobile'),
-          roadNo: _db.get('roadNo'),
-          houseNo: _db.get('houseNo'),
-          pinCode: _db.get('picCode'),
-          addressType: _db.get('addressType'),
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    if (_db.exists) {
+      deliveryAddressModel = DeliveryAddressModel(
+        firstName: _db.get('firstName'),
+        lastName: _db.get('lastName'),
+        countryName: _db.get('countryName'),
+        cityName: _db.get('cityName'),
+        mobile: _db.get('mobile'),
+        alMobile: _db.get('alMobile'),
+        roadNo: _db.get('roadNo'),
+        houseNo: _db.get('houseNo'),
+        pinCode: _db.get('picCode'),
+        addressType: _db.get('addressType'),
       );
-      return deliveryAddressModel;
+      newList.add(deliveryAddressModel);
+      notifyListeners();
     }
-
-
+    _deliveryAddressList = newList;
+    notifyListeners();
   }
+
+  List<DeliveryAddressModel> get getDeliveryAddressLis => _deliveryAddressList;
 }

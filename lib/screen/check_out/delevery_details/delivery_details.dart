@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/providers/check_out_provider.dart';
 import 'package:grocery_app/screen/check_out/add_delivery_address/add_delivery_address.dart';
 import 'package:grocery_app/screen/check_out/delevery_details/single_delivery_items.dart';
 import 'package:grocery_app/screen/check_out/payment_summary/payment_summary.dart';
 import 'package:grocery_app/utility/constants.dart';
+import 'package:provider/provider.dart';
 
 class DeliveryDetails extends StatelessWidget {
-  List<Widget> address = [
-    SingleDeliveryItems(
-      address: "Dhaka/Bangladesh, sector 14, road 22, house 12",
-      title: "Riyazur Rohman Kawchar",
-      addressType: "Home",
-      number: "028545455646554",
-    ),
-  ];
 
   DeliveryDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    CheckOutProvider checkOutProvider=Provider.of(context);
+      checkOutProvider.getDeliveryAddressData();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -29,7 +27,7 @@ class DeliveryDetails extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddDeliveryAddress(),
+              builder: (context) => const AddDeliveryAddress(),
             ),
           );
         },
@@ -43,11 +41,11 @@ class DeliveryDetails extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           color: primaryColor,
           onPressed: () {
-            address.isEmpty
+            checkOutProvider.getDeliveryAddressLis.isEmpty
                 ? Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddDeliveryAddress(),
+                      builder: (context) => const AddDeliveryAddress(),
                     ),
                   )
                 : Navigator.push(
@@ -57,7 +55,7 @@ class DeliveryDetails extends StatelessWidget {
                     ),
                   );
           },
-          child: address.isEmpty
+          child: checkOutProvider.getDeliveryAddressLis.isEmpty
               ? const Text("Add new Address")
               : const Text("Payment summary"),
         ),
@@ -71,15 +69,21 @@ class DeliveryDetails extends StatelessWidget {
           const Divider(
             thickness: 1,
           ),
+          checkOutProvider.getDeliveryAddressLis.isEmpty?Container(
+            child: const Center(
+              child: Text("No Data"),
+            ),
+          ):
           Column(
-            children: [
-              address.isNotEmpty ? SingleDeliveryItems(
-                address: "Dhaka/Bangladesh, sector 14, road 22, house 12",
-                title: "Riyazur Rohman Kawchar",
-                addressType: "Home",
-                number: "028545455646554",
-              ) : Container(),
-            ],
+            children: checkOutProvider.getDeliveryAddressLis.map((e){
+              return SingleDeliveryItems(
+                address: "${e.cityName}/${e.cityName}, ${e.roadNo}, ${e.houseNo}, ${e.pinCode}",
+                title: "${e.firstName} ${e.lastName}",
+                addressType: e.addressType=="AddressType.other"?"Other" :e.addressType=="AddressType.home"?'Home':'work',
+                number: e.mobile,
+              );
+
+            }).toList(),
           )
         ],
       ),
