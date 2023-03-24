@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/models/delivery_address_model.dart';
 import 'package:grocery_app/providers/check_out_provider.dart';
 import 'package:grocery_app/screen/check_out/add_delivery_address/add_delivery_address.dart';
 import 'package:grocery_app/screen/check_out/delevery_details/single_delivery_items.dart';
@@ -6,20 +7,27 @@ import 'package:grocery_app/screen/check_out/payment_summary/payment_summary.dar
 import 'package:grocery_app/utility/constants.dart';
 import 'package:provider/provider.dart';
 
-class DeliveryDetails extends StatelessWidget {
+class DeliveryDetails extends StatefulWidget {
 
   DeliveryDetails({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<DeliveryDetails> createState() => _DeliveryDetailsState();
+}
 
+class _DeliveryDetailsState extends State<DeliveryDetails> {
+
+  DeliveryAddressModel? value;
+
+  @override
+  Widget build(BuildContext context) {
     CheckOutProvider checkOutProvider=Provider.of(context);
       checkOutProvider.getDeliveryAddressData();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: const Text("Delivery Address"),
+        title: const Text("Delivery Details"),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
@@ -51,7 +59,9 @@ class DeliveryDetails extends StatelessWidget {
                 : Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PaymentSummary(),
+                      builder: (context) =>  PaymentSummary(
+                        deliveryAddressList: value!,
+                      ),
                     ),
                   );
           },
@@ -76,6 +86,10 @@ class DeliveryDetails extends StatelessWidget {
           ):
           Column(
             children: checkOutProvider.getDeliveryAddressLis.map((e){
+
+              setState(() {
+                value=e;
+              });
               return SingleDeliveryItems(
                 address: "${e.cityName}/${e.cityName}, ${e.roadNo}, ${e.houseNo}, ${e.pinCode}",
                 title: "${e.firstName} ${e.lastName}",

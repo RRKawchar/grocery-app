@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_app/models/delivery_address_model.dart';
+import 'package:grocery_app/screen/check_out/delevery_details/single_delivery_items.dart';
 import 'package:grocery_app/screen/check_out/payment_summary/order_item.dart';
 import 'package:grocery_app/utility/constants.dart';
 import 'package:grocery_app/widget/textWidget.dart';
 class PaymentSummary extends StatefulWidget {
-  const PaymentSummary({Key? key}) : super(key: key);
+
+  final DeliveryAddressModel deliveryAddressList;
+  const PaymentSummary({Key? key,required this.deliveryAddressList}) : super(key: key);
 
   @override
   State<PaymentSummary> createState() => _PaymentSummaryState();
@@ -46,10 +50,12 @@ class _PaymentSummaryState extends State<PaymentSummary> {
             itemBuilder: (context,index){
             return Column(
               children: [
-                ListTile(
-                  title: TextWidget(text:'First Name'),
-                  subtitle: TextWidget(text:'"Dhaka/Bangladesh, sector 14, road 22, house 12"'),
-                ),
+            SingleDeliveryItems(
+            address: "${widget.deliveryAddressList.cityName}/${widget.deliveryAddressList.cityName}, ${widget.deliveryAddressList.roadNo}, ${widget.deliveryAddressList.houseNo}, ${widget.deliveryAddressList.pinCode}",
+              title: "${widget.deliveryAddressList.firstName} ${widget.deliveryAddressList.lastName}",
+              addressType: widget.deliveryAddressList.addressType=="AddressType.other"?"Other" :widget.deliveryAddressList.addressType=="AddressType.home"?'Home':'work',
+              number: widget.deliveryAddressList.mobile,
+            ),
                 const Divider(),
                 ExpansionTile(
                     title:TextWidget(text: "Order Item 6",),
